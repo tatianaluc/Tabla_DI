@@ -53,6 +53,9 @@
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.productosAnimalesBindingNavigatorSaveItem = new System.Windows.Forms.ToolStripButton();
             this.tsbEditar = new System.Windows.Forms.ToolStripButton();
+            this.tscCampo = new System.Windows.Forms.ToolStripComboBox();
+            this.tstBuscar = new System.Windows.Forms.ToolStripTextBox();
+            this.tsbBuscar = new System.Windows.Forms.ToolStripButton();
             this.idProductoLabel1 = new System.Windows.Forms.Label();
             this.nombreTextBox = new System.Windows.Forms.TextBox();
             this.codigoTextBox = new System.Windows.Forms.TextBox();
@@ -66,14 +69,13 @@
             this.btnCancelar = new System.Windows.Forms.Button();
             this.status1 = new System.Windows.Forms.StatusStrip();
             this.tslEstado = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tscCampo = new System.Windows.Forms.ToolStripComboBox();
-            this.tstBuscar = new System.Windows.Forms.ToolStripTextBox();
-            this.tsbBuscar = new System.Windows.Forms.ToolStripButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.menuContextual = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmImprimir = new System.Windows.Forms.ToolStripMenuItem();
             this.productosAnimalesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.productosAnimalesTableAdapter = new DAM2_DI_TiendaAnimales_DeLuca_Tatiana.ProductosAnimalesTableAdapter();
             this.productosAnimalesTableAdapter1 = new DAM2_DI_TiendaAnimales_DeLuca_Tatiana.ProductosAnimalesTableAdapterTableAdapters.ProductosAnimalesTableAdapter1();
             this.tableAdapterManager = new DAM2_DI_TiendaAnimales_DeLuca_Tatiana.ProductosAnimalesTableAdapterTableAdapters.TableAdapterManager();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             idProductoLabel = new System.Windows.Forms.Label();
             nombreLabel = new System.Windows.Forms.Label();
             codigoLabel = new System.Windows.Forms.Label();
@@ -87,6 +89,7 @@
             this.productosAnimalesBindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbImagen)).BeginInit();
             this.status1.SuspendLayout();
+            this.menuContextual.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.productosAnimalesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productosAnimalesTableAdapter)).BeginInit();
             this.SuspendLayout();
@@ -95,7 +98,7 @@
             // 
             idProductoLabel.AutoSize = true;
             idProductoLabel.ForeColor = System.Drawing.Color.Maroon;
-            idProductoLabel.Location = new System.Drawing.Point(613, 61);
+            idProductoLabel.Location = new System.Drawing.Point(613, 69);
             idProductoLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             idProductoLabel.Name = "idProductoLabel";
             idProductoLabel.Size = new System.Drawing.Size(83, 17);
@@ -190,7 +193,7 @@
             this.productosAnimalesBindingNavigator.DeleteItem = null;
             this.productosAnimalesBindingNavigator.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.productosAnimalesBindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.productosAnimalesBindingNavigator.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.productosAnimalesBindingNavigator.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.productosAnimalesBindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bindingNavigatorMoveFirstItem,
             this.bindingNavigatorMovePreviousItem,
@@ -215,7 +218,7 @@
             this.productosAnimalesBindingNavigator.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.productosAnimalesBindingNavigator.Name = "productosAnimalesBindingNavigator";
             this.productosAnimalesBindingNavigator.PositionItem = this.bindingNavigatorPositionItem;
-            this.productosAnimalesBindingNavigator.Size = new System.Drawing.Size(1066, 31);
+            this.productosAnimalesBindingNavigator.Size = new System.Drawing.Size(1066, 39);
             this.productosAnimalesBindingNavigator.TabIndex = 0;
             this.productosAnimalesBindingNavigator.Text = "bindingNavigator1";
             // 
@@ -225,7 +228,7 @@
             this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
             this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
             this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(28, 28);
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(36, 36);
             this.bindingNavigatorAddNewItem.Text = "Agregar nuevo";
             this.bindingNavigatorAddNewItem.Click += new System.EventHandler(this.bindingNavigatorAddNewItem_Click);
             // 
@@ -233,7 +236,7 @@
             // 
             this.bindingNavigatorCountItem.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(41, 28);
+            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(41, 36);
             this.bindingNavigatorCountItem.Text = "de {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Número total de elementos";
             // 
@@ -243,7 +246,7 @@
             this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
             this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
             this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(28, 28);
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(36, 36);
             this.bindingNavigatorMoveFirstItem.Text = "Mover primero";
             // 
             // bindingNavigatorMovePreviousItem
@@ -252,13 +255,13 @@
             this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
             this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
             this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(28, 28);
+            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(36, 36);
             this.bindingNavigatorMovePreviousItem.Text = "Mover anterior";
             // 
             // bindingNavigatorSeparator
             // 
             this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 31);
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 39);
             // 
             // bindingNavigatorPositionItem
             // 
@@ -274,7 +277,7 @@
             // bindingNavigatorSeparator1
             // 
             this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
             // bindingNavigatorMoveNextItem
             // 
@@ -282,7 +285,7 @@
             this.bindingNavigatorMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveNextItem.Image")));
             this.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem";
             this.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(28, 28);
+            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(36, 36);
             this.bindingNavigatorMoveNextItem.Text = "Mover siguiente";
             // 
             // bindingNavigatorMoveLastItem
@@ -291,13 +294,13 @@
             this.bindingNavigatorMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveLastItem.Image")));
             this.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem";
             this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(28, 28);
+            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(36, 36);
             this.bindingNavigatorMoveLastItem.Text = "Mover último";
             // 
             // bindingNavigatorSeparator2
             // 
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 31);
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 39);
             // 
             // bindingNavigatorDeleteItem
             // 
@@ -305,7 +308,7 @@
             this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
             this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
             this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(28, 28);
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(36, 36);
             this.bindingNavigatorDeleteItem.Text = "Eliminar";
             this.bindingNavigatorDeleteItem.Click += new System.EventHandler(this.bindingNavigatorDeleteItem_Click);
             // 
@@ -314,7 +317,7 @@
             this.productosAnimalesBindingNavigatorSaveItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.productosAnimalesBindingNavigatorSaveItem.Image = ((System.Drawing.Image)(resources.GetObject("productosAnimalesBindingNavigatorSaveItem.Image")));
             this.productosAnimalesBindingNavigatorSaveItem.Name = "productosAnimalesBindingNavigatorSaveItem";
-            this.productosAnimalesBindingNavigatorSaveItem.Size = new System.Drawing.Size(28, 28);
+            this.productosAnimalesBindingNavigatorSaveItem.Size = new System.Drawing.Size(36, 36);
             this.productosAnimalesBindingNavigatorSaveItem.Text = "Guardar datos";
             this.productosAnimalesBindingNavigatorSaveItem.Click += new System.EventHandler(this.productosAnimalesBindingNavigatorSaveItem_Click);
             // 
@@ -323,14 +326,43 @@
             this.tsbEditar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbEditar.Image = ((System.Drawing.Image)(resources.GetObject("tsbEditar.Image")));
             this.tsbEditar.Name = "tsbEditar";
-            this.tsbEditar.Size = new System.Drawing.Size(28, 28);
+            this.tsbEditar.Size = new System.Drawing.Size(36, 36);
             this.tsbEditar.Text = "Editar productos";
             this.tsbEditar.Click += new System.EventHandler(this.tsbEditar_Click);
+            // 
+            // tscCampo
+            // 
+            this.tscCampo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tscCampo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tscCampo.ForeColor = System.Drawing.Color.Maroon;
+            this.tscCampo.Items.AddRange(new object[] {
+            "Nombre",
+            "Código",
+            "Marca",
+            "Categoría"});
+            this.tscCampo.Name = "tscCampo";
+            this.tscCampo.Size = new System.Drawing.Size(121, 39);
+            // 
+            // tstBuscar
+            // 
+            this.tstBuscar.BackColor = System.Drawing.Color.White;
+            this.tstBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.tstBuscar.ForeColor = System.Drawing.Color.Maroon;
+            this.tstBuscar.Name = "tstBuscar";
+            this.tstBuscar.Size = new System.Drawing.Size(100, 39);
+            // 
+            // tsbBuscar
+            // 
+            this.tsbBuscar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbBuscar.Image = ((System.Drawing.Image)(resources.GetObject("tsbBuscar.Image")));
+            this.tsbBuscar.Name = "tsbBuscar";
+            this.tsbBuscar.Size = new System.Drawing.Size(36, 36);
+            this.tsbBuscar.Text = "Buscar";
             // 
             // idProductoLabel1
             // 
             this.idProductoLabel1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.productosAnimalesBindingSource, "IdProducto", true));
-            this.idProductoLabel1.Location = new System.Drawing.Point(706, 61);
+            this.idProductoLabel1.Location = new System.Drawing.Point(706, 69);
             this.idProductoLabel1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.idProductoLabel1.Name = "idProductoLabel1";
             this.idProductoLabel1.Size = new System.Drawing.Size(266, 30);
@@ -415,7 +447,6 @@
             // 
             // pbImagen
             // 
-            this.pbImagen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbImagen.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.productosAnimalesBindingSource, "Imagen", true));
             this.pbImagen.Location = new System.Drawing.Point(412, 314);
             this.pbImagen.Name = "pbImagen";
@@ -461,34 +492,21 @@
             this.tslEstado.Size = new System.Drawing.Size(185, 17);
             this.tslEstado.Text = "Listo para añadir nuevo producto.";
             // 
-            // tscCampo
+            // menuContextual
             // 
-            this.tscCampo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tscCampo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tscCampo.ForeColor = System.Drawing.Color.Maroon;
-            this.tscCampo.Items.AddRange(new object[] {
-            "Nombre",
-            "Código",
-            "Marca",
-            "Categoría"});
-            this.tscCampo.Name = "tscCampo";
-            this.tscCampo.Size = new System.Drawing.Size(121, 31);
+            this.menuContextual.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmImprimir});
+            this.menuContextual.Name = "menuContextual";
+            this.menuContextual.Size = new System.Drawing.Size(127, 26);
             // 
-            // tstBuscar
+            // tsmImprimir
             // 
-            this.tstBuscar.BackColor = System.Drawing.Color.White;
-            this.tstBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.tstBuscar.ForeColor = System.Drawing.Color.Maroon;
-            this.tstBuscar.Name = "tstBuscar";
-            this.tstBuscar.Size = new System.Drawing.Size(100, 31);
-            // 
-            // tsbBuscar
-            // 
-            this.tsbBuscar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbBuscar.Image = ((System.Drawing.Image)(resources.GetObject("tsbBuscar.Image")));
-            this.tsbBuscar.Name = "tsbBuscar";
-            this.tsbBuscar.Size = new System.Drawing.Size(28, 28);
-            this.tsbBuscar.Text = "Buscar";
+            this.tsmImprimir.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsmImprimir.ForeColor = System.Drawing.Color.Maroon;
+            this.tsmImprimir.Name = "tsmImprimir";
+            this.tsmImprimir.Size = new System.Drawing.Size(126, 22);
+            this.tsmImprimir.Text = "Imprimir";
+            this.tsmImprimir.Click += new System.EventHandler(this.tsmImprimir_Click);
             // 
             // productosAnimalesBindingSource
             // 
@@ -545,7 +563,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Tag = "";
-            this.Text = "Form1";
+            this.Text = "Pet Sunrise Tienda Animal";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.productosAnimalesBindingNavigator)).EndInit();
@@ -554,6 +572,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbImagen)).EndInit();
             this.status1.ResumeLayout(false);
             this.status1.PerformLayout();
+            this.menuContextual.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.productosAnimalesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.productosAnimalesTableAdapter)).EndInit();
             this.ResumeLayout(false);
@@ -598,6 +617,8 @@
         private System.Windows.Forms.ToolStripTextBox tstBuscar;
         private System.Windows.Forms.ToolStripButton tsbBuscar;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ContextMenuStrip menuContextual;
+        private System.Windows.Forms.ToolStripMenuItem tsmImprimir;
     }
 }
 

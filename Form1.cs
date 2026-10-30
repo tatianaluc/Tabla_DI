@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Printing;
 
 namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
 {
@@ -20,20 +21,20 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
 
         private void productosAnimalesBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
-           GuardarEnBD();
+            GuardarEnBD();
 
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // TODO: esta línea de código carga datos en la tabla 'productosAnimalesTableAdapter.ProductosAnimales' Puede moverla o quitarla según sea necesario.
+
             this.productosAnimalesTableAdapter1.Fill(this.productosAnimalesTableAdapter.ProductosAnimales);
             //las cargamos aqui tambien 
             CargarImagen();
             //que arranque en modo consulta 
             PonerModo(false);
             //COntrolamos las excepciones cuando se intentan guardar datos que no cumplen con lo pedido
-            // Valores por defecto para las fichas nuevas (el +)
+            // Valores por defecto para nuevo producto
             productosAnimalesTableAdapter.ProductosAnimales.PrecioColumn.DefaultValue = 0m;
             productosAnimalesTableAdapter.ProductosAnimales.StockColumn.DefaultValue = 0;
             productosAnimalesTableAdapter.ProductosAnimales.FechaAltaColumn.DefaultValue = DateTime.Today;
@@ -52,22 +53,46 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
             // Añadimos tooltips a los botones de la barra y a los controles del formulario
             PonerTooltips();
 
+            // Asigna el menú contextual a todo el formulario en general
+            this.ContextMenuStrip = menuContextual;
+
+            // Validacion de algunos campos visualmente
+            nombreTextBox.TextChanged += ValidarCampoVisualmente;
+            precioTextBox.TextChanged += ValidarCampoVisualmente;
+            stockTextBox.TextChanged += ValidarCampoVisualmente;
+
         }
 
         // Codigo para cargar las imágenes en el picturebox
-        private void CargarImagen()   
+        private void CargarImagen()
         {
+            // Quitamos la foto anterior y liberamos para caundo se quiera editar
             if (pbImagen.Image != null) { pbImagen.Image.Dispose(); pbImagen.Image = null; }
 
+            // Fila = producto actual
+            // si no hay ninguna, salimos
             DataRowView fila = productosAnimalesBindingSource.Current as DataRowView;
-            if (fila == null) return;
+            if (fila == null)
+            {
+                //Actualizar el título de la ventana con el producto actual
+                this.Text = $"Pet Sunrise - [{fila["Codigo"]}] {fila["Nombre"]} (Total registros: {productosAnimalesBindingSource.Count})";
+            }
+            else
+            {
+                this.Text = "Pet Sunrise Tienda Animal - Sin registros";
+            }
 
+
+            //la ruta donde se encuentra la imágen
             string ruta = Path.Combine(Application.StartupPath, "Imagenes", fila["Imagen"].ToString());
             if (File.Exists(ruta))
             {
                 using (Image original = Image.FromFile(ruta))
-                    pbImagen.Image = new Bitmap(original);   // copia: el archivo no queda bloqueado
+                    pbImagen.Image = new Bitmap(original);   // copia para que el archivo no queda bloqueado y se pueda sobreescribir
             }
+
+
+
         }
 
         private void productosAnimalesBindingSource_CurrentChanged(object sender, EventArgs e)
@@ -163,8 +188,11 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
             Validate();
             productosAnimalesBindingSource.EndEdit();
             PonerModo(false);
-            //avisar que el producto está aeptado pero aun no guardado.
-            MessageBox.Show("Producto aceptado. Pulsa el disquete para guardarlo en la base de datos.",
+            //avisar que el producto está aeptado pero aun no guardado con feedback visual 
+            status1.BackColor = Color.FromArgb(220, 248, 198); // Verde suavecito
+            tslEstado.Text = "Producto aceptado correctamente.";
+
+            MessageBox.Show("Pulse en el botón de guardar los cambios.",
             "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
@@ -225,7 +253,7 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
 
             if (btnAceptar.Enabled)   // estás en modo acción
             {
-                if (MessageBox.Show("Tiene una acción sin terminar. ¿Desea salir y perder los cambios?", "Salir",
+                if (MessageBox.Show("¿Desea salir y perder los cambios?", "Salir",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     e.Cancel = true;
                 return;
@@ -288,7 +316,7 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
             toolTip1.SetToolTip(tscCampo.Control, "Introduzca el campo por el que buscar");
             toolTip1.SetToolTip(tstBuscar.Control, "Producto a buscar, según filtro");
 
-            // Controles del formulario
+            // Ayudas para saber que poner en el formulario
             toolTip1.SetToolTip(nombreTextBox, "Nombre del producto");
             toolTip1.SetToolTip(codigoTextBox, "Código del producto, ej; PER-001");
             toolTip1.SetToolTip(precioTextBox, "Precio en €");
@@ -317,27 +345,34 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
              */
         }
 
+        // Cargar la imagen del producto desde un archivo, con el nombre del código del producto
         private void pbImagen_Click(object sender, EventArgs e)
         {
-            if (!btnAceptar.Enabled) return;   // solo en modo acción
+            if (!btnAceptar.Enabled) return;   // solo que se pueda en modo acción
 
+            // Fila = producto actual
+            // si no hay ninguna, salimos
             DataRowView fila = productosAnimalesBindingSource.Current as DataRowView;
             if (fila == null) return;
 
+            // La foto se guarda con el código del producto como nombre,
+            // avisamos si no tiene codigo y ponemos el cursor ahí para que pueda indicarlo
             if (codigoTextBox.Text.Trim() == "")
             {
                 MessageBox.Show("Escriba el código del producto, la foto se guarda con ese nombre.",
-                    "Indique el código", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "Introduzca el código", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 codigoTextBox.Focus();
                 return;
             }
 
+            // aqui se abre la ventana de Windows para elegir un archivo
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Elija la foto del producto";
                 dlg.Filter = "Imágenes (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
                 if (dlg.ShowDialog() != DialogResult.OK) return;
 
+                //comprobamos que no falle nada con el archivo, por ejemplo nombre, permisos o que no exista la carpeta donde guardarlo
                 try
                 {
                     string carpeta = Path.Combine(Application.StartupPath, "Imagenes");
@@ -346,8 +381,11 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
                     string nombre = codigoTextBox.Text.Trim() + Path.GetExtension(dlg.FileName).ToLower();
                     File.Copy(dlg.FileName, Path.Combine(carpeta, nombre), true);
 
+                    // Guardamos el nombre de la foto en la fila actual del BindingSource, para que se guarde en la BD
                     fila["Imagen"] = nombre;
-                   CargarImagen();
+
+                    // Volvemos a dibujar la foto en el PictureBox.
+                    CargarImagen();
                 }
                 catch (Exception ex)
                 {
@@ -356,9 +394,94 @@ namespace DAM2_DI_TiendaAnimales_DeLuca_Tatiana
                 }
             }
         }
+
+        private void tsmImprimir_Click(object sender, EventArgs e)
+        {
+            // Si no hay ningún producto en pantalla, o una búsqueda vacía, no hay nada que imprimir
+            if (productosAnimalesBindingSource.Current == null)
+            {
+                MessageBox.Show("Sin resultado a imprimir.", "Imprimir",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // PrintDocument es el documento que se manda a la impresora
+            PrintDocument doc = new PrintDocument();
+
+            // Cuando haga falta "dibujar" una página, se llama a ImprimirPagina
+            doc.PrintPage += ImprimirPagina;
+
+            // Vista previa de cómo quedará la hoja a imprimir
+            // "using" cierra la ventana
+            using (PrintPreviewDialog vista = new PrintPreviewDialog())
+            {
+                vista.Document = doc;
+                vista.ShowDialog();
+            }
+        }
+
+        // Dibuja la hoja con lo que hay al momento de querer imprimir la pantalla
+        private void ImprimirPagina(object sender, PrintPageEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            int x = e.MarginBounds.Left;
+            int y = e.MarginBounds.Top;
+
+            using (Font tituloFont = new Font("Segoe UI", 18, FontStyle.Bold),
+                        etiquetaFont = new Font("Segoe UI", 11, FontStyle.Bold),
+                        valorFont = new Font("Segoe UI", 11, FontStyle.Regular))
+            {
+                // Titulo 
+                g.DrawString("Pet Sunrise: Ficha de Producto", tituloFont, Brushes.Maroon, x, y);
+                y += 50;
+
+                // AARray simplificado con lo que se quiere mostrar en la ficha
+                string[] campos = {
+            "Nombre: " + nombreTextBox.Text,
+            "Código: " + codigoTextBox.Text,
+            "Categoría: " + categoriaComboBox.Text,
+            "Marca: " + marcaTextBox.Text,
+            "Precio: " + precioTextBox.Text + " €",
+            "Stock: " + stockTextBox.Text,
+            "Fecha de alta: " + fechaAltaDateTimePicker.Value.ToShortDateString()
+        };
+
+                // Mostrar los campos en una lista 
+                foreach (string campo in campos)
+                {
+                    g.DrawString(campo, valorFont, Brushes.Black, x, y);
+                    y += 30; // Espacio entre lineas
+                }
+
+                // Si hay imagen, se añade abajo
+                if (pbImagen.Image != null)
+                {
+                    // esti simplemente es para que la imagen no este encima del texto y queda abajo del todo
+                    y += 20;
+                    Image img = pbImagen.Image;
+                    float escala = Math.Min(200f / img.Width, 200f / img.Height);
+                    g.DrawImage(img, x, y, img.Width * escala, img.Height * escala);
+                }
+            }
+
+            e.HasMorePages = false;
+        }
+
+        //Para que los campos obligatorios cambien de color de fondo si estan vacios o incorrectos
+        private void ValidarCampoVisualmente(object sender, EventArgs e)
+        {
+            TextBox txt = sender as TextBox;
+            if (txt == null) return;
+
+            // Si estás en modo edición y el campo está vacío, que se cambie el fondo
+            if (btnAceptar.Enabled && string.IsNullOrWhiteSpace(txt.Text))
+            {
+                txt.BackColor = Color.MistyRose;
+            }
+            else
+            {
+                txt.BackColor = Color.White;
+            }
+        }
     }
 }
-/*
- * no he entendido lo ultimo, yo simpllmente quiero que se pueda escoger una foto de la carpeta que sea, 
- * de cualquier archivo y que al gurdar el producto o cambios, se guarde la imagen
- */
